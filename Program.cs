@@ -27,7 +27,7 @@ namespace cs_codacy_coverage
             [Option('c', "commituuid", Required = true, HelpText = "The CommitUUID")]
             public string CommitUuid { get; set; }
 
-            [Option('p', "projecttoken", Required = true, HelpText = "The Project Token")]
+            [Option('t', "projecttoken", Required = true, HelpText = "The Project Token")]
             public string ProjectToken { get; set; }
 
             [Option('r', "report", Required = true, HelpText = "Path to the coverage report")]
@@ -36,12 +36,6 @@ namespace cs_codacy_coverage
 
         static void Main(string[] args)
         {
-            var parser = new DotCoverParser()
-                               {
-                                   CoverageFile = @"/Users/hjrocha/dev/Codacy/cs_coverage_samples/CoverageReport.xml"
-                               };
-            parser.Process();
-            /* 
             Parser.Default.ParseArguments<Options>(args)
                    .WithParsed<Options>(o =>
                    {
@@ -52,6 +46,7 @@ namespace cs_codacy_coverage
                            case "dotcover":
                                parser = new DotCoverParser()
                                {
+                                   CoverageFile = @"/Users/hjrocha/dev/cs_coverage_samples/CoverageReport.xml"
 
                                };
                                break;
@@ -68,12 +63,13 @@ namespace cs_codacy_coverage
 
                        }
                        report = parser.Process();
-                       //SendReport(report,o.CommitUuid, o.ProjectToken);
+                       SendReport(report, o.CommitUuid, o.ProjectToken);
+
 
 
 
                    });
-                   */
+                   
         }
 
         private static void SendReport(CoverageReport coverage, string commitUuid, string projectToken)

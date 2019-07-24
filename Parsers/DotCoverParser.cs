@@ -21,8 +21,16 @@ namespace cs_codacy_coverage.Parsers
             var namespaces = modules.Elements("Assembly").SelectMany(x => x.Elements("Namespace"));
             //modules.Elements("SolutionFolder").Elements("Project").SelectMany(x => x.Elements("Namespace"));
             var moduleIndex = 0;
-
-            var fileList = GetProjectFilesList(modules.Elements("File"));
+            Dictionary<string, string> fileList;
+            if(modules.Element("FileIndices") != null)
+            {
+                fileList = GetProjectFilesList(modules.Element("FileIndices").Elements("File"));
+            }
+            else
+            {
+                fileList = GetProjectFilesList(modules.Elements("File"));
+            }
+          
 
             foreach (var module in namespaces)
             {
@@ -43,6 +51,10 @@ namespace cs_codacy_coverage.Parsers
                     string fileId = String.Empty;
                     var methodCoverage = new List<LineCoverage>();
                     var methods = projectClass.Elements("Member");
+                    if(methods.Count() == 0)
+                    {
+                        methods = projectClass.Elements("Method");
+                    }
                     foreach (var method in methods)
                     {
 

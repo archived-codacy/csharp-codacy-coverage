@@ -16,11 +16,6 @@ namespace cs_codacy_coverage.Parsers
 {
     class OpenCoverParser : BaseParser
     {
-
-
-        private static string baseFolder = "C:/Users/hjrocha/source/repos/ClassLibrary2Sln";
-
-
         public override CoverageReport Process()
         {
 
@@ -96,7 +91,7 @@ namespace cs_codacy_coverage.Parsers
                 fileReports = classCoverages.GroupBy(g => g.FileName)
                     .Select(x => new CoverageFileInfo
                     {
-                        filename = x.Key.Replace(baseFolder, ""),
+                        filename = x.Key,
                         total = Convert.ToInt32(Math.Round(x.Average(a => a.Total), 2, MidpointRounding.AwayFromZero)),
                         coverage = x.SelectMany(s => s.CoveredLines)
                             .GroupBy(g => g.LineNumber)

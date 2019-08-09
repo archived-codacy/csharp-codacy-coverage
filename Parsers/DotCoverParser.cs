@@ -91,7 +91,7 @@ namespace cs_codacy_coverage.Parsers
                 fileReports = classCoverages.GroupBy(g => g.FileName)
         .Select(x => new CoverageFileInfo
         {
-            filename = x.Key,//.Replace(baseFolder, ""),
+            filename = x.Key,
             total = Convert.ToInt32(Math.Round(x.Average(a => a.Total), 2, MidpointRounding.AwayFromZero)),
             coverage = x.SelectMany(s => s.CoveredLines)
                 .GroupBy(g => g.LineNumber)
@@ -115,8 +115,9 @@ namespace cs_codacy_coverage.Parsers
             foreach (var file in files)
             {
                 var filePath = file.Attribute("Name").Value;
-                var srcPos = filePath.IndexOf(@"\src\", StringComparison.OrdinalIgnoreCase);
-                filePath = filePath.Substring(srcPos + 1, filePath.Length - srcPos - 1).Replace("\\", "/");
+                filePath = filePath.Replace("\\", "/");
+                //var srcPos = filePath.IndexOf(@"\src\", StringComparison.OrdinalIgnoreCase);
+                //filePath = filePath.Substring(srcPos + 1, filePath.Length - srcPos - 1).Replace("\\", "/");
                 fileList.Add(file.Attribute("Index").Value, filePath);
             }
 

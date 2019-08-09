@@ -46,14 +46,17 @@ namespace cs_codacy_coverage
                            case "dotcover":
                                parser = new DotCoverParser()
                                {
-                                   CoverageFile = @"/Users/hjrocha/dev/cs_coverage_samples/CoverageReport.xml"
-
+                                   CoverageFile = o.CoverageFile,
+                                   CommitUuid = o.CommitUuid,
+                                   ProjectToken = o.ProjectToken
                                };
                                break;
                            case "opencover":
                                parser = new OpenCoverParser()
                                {
-
+                                   CoverageFile = o.CoverageFile,
+                                   CommitUuid = o.CommitUuid,
+                                   ProjectToken = o.ProjectToken
                                };
                                break;
                            default:

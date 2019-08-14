@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codacy.CSharpCoverage", "src\Codacy.CSharpCoverage.csproj", "{3229C6BE-7616-452E-BA52-E9BB7D7DA893}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpCoverage.Tests", "test\CSharpCoverage.Tests\CSharpCoverage.Tests.csproj", "{DB0F5FC8-92DA-4333-A242-FACA000CCA22}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3229C6BE-7616-452E-BA52-E9BB7D7DA893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3229C6BE-7616-452E-BA52-E9BB7D7DA893}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3229C6BE-7616-452E-BA52-E9BB7D7DA893}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3229C6BE-7616-452E-BA52-E9BB7D7DA893}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB0F5FC8-92DA-4333-A242-FACA000CCA22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB0F5FC8-92DA-4333-A242-FACA000CCA22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB0F5FC8-92DA-4333-A242-FACA000CCA22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB0F5FC8-92DA-4333-A242-FACA000CCA22}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

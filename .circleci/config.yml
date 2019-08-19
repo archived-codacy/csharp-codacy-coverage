@@ -1,0 +1,174 @@
+version: 2.1
+
+orbs:
+  codacy: codacy/base@0.0.13
+
+jobs:
+  build_and_test:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+    working_directory: ~/workdir
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Compile
+          command: dotnet build -c Debug
+      - run:
+          name: Run tests
+          command: dotnet test test/CSharpCoverage.Tests
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - workdir
+
+  build_runtime:
+    parameters:
+      framework_version:
+        type: string
+      runtime:
+        type: string
+    description: "Build to a specific runtime command"
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:<< parameters.framework_version >>
+    working_directory: ~/workdir
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install needed packages
+          command: |
+            apt-get update
+            apt-get install -y zip
+      - run:
+          name: Build for << parameters.runtime >> (netcoreapp<< parameters.framework_version >>)
+          command: ./scripts/publish.sh netcoreapp<< parameters.framework_version >> << parameters.runtime >>
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - workdir/artifacts/
+
+  circleci-artifacts:
+    machine: true
+    working_directory: ~/workdir
+    steps:
+      - attach_workspace:
+          at: ~/
+      - store_artifacts:
+          path: artifacts/
+
+  github-release:
+    docker:
+      - image: cibuilds/github:0.12.2
+    working_directory: ~/workdir
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: "Publish Release on GitHub"
+          command: |
+            GHR_FLAGS=""
+            if [ "${CIRCLE_BRANCH}" != "master" ]; then
+              GHR_FLAGS+="-prerelease"
+            fi
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${GHR_FLAGS} -delete $(cat .version) ./artifacts/
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - codacy/checkout_and_version
+      - build_and_test:
+          requires:
+            - codacy/checkout_and_version
+      - build_runtime:
+          name: build_runtime_2.2_linux-x64
+          framework_version: "2.2"
+          runtime: linux-x64
+          requires:
+            - build_and_test
+      - build_runtime:
+          name: build_runtime_2.2_linux-musl-x64
+          framework_version: "2.2"
+          runtime: linux-musl-x64
+          requires:
+            - build_and_test
+      - build_runtime:
+          name: build_runtime_2.2_osx-x64
+          framework_version: "2.2"
+          runtime: osx-x64
+          requires:
+            - build_and_test
+      - build_runtime:
+          name: build_runtime_2.2_win-x64
+          framework_version: "2.2"
+          runtime: win-x64
+          requires:
+            - build_and_test
+      - build_runtime:
+          name: build_runtime_2.2_win-x86
+          framework_version: "2.2"
+          runtime: win-x86
+          requires:
+            - build_and_test
+      - build_runtime:
+          name: build_runtime_3.0_linux-x64
+          framework_version: "3.0"
+          runtime: linux-x64
+          requires:
+            - build_and_test
+      - build_runtime:
+          name: build_runtime_3.0_linux-musl-x64
+          framework_version: "3.0"
+          runtime: linux-musl-x64
+          requires:
+            - build_and_test
+      - build_runtime:
+          name: build_runtime_3.0_osx-x64
+          framework_version: "3.0"
+          runtime: osx-x64
+          requires:
+            - build_and_test
+      - build_runtime:
+          name: build_runtime_3.0_win-x64
+          framework_version: "3.0"
+          runtime: win-x64
+          requires:
+            - build_and_test
+      - build_runtime:
+          name: build_runtime_3.0_win-x86
+          framework_version: "3.0"
+          runtime: win-x86
+          requires:
+            - build_and_test
+      - circleci-artifacts:
+          requires:
+            - build_runtime_2.2_win-x86
+            - build_runtime_2.2_win-x64
+            - build_runtime_2.2_osx-x64
+            - build_runtime_2.2_linux-musl-x64
+            - build_runtime_2.2_linux-x64
+            - build_runtime_3.0_win-x86
+            - build_runtime_3.0_win-x64
+            - build_runtime_3.0_osx-x64
+            - build_runtime_3.0_linux-musl-x64
+            - build_runtime_3.0_linux-x64
+            # - build_and_coverage
+      - github-release:
+          context: CodacyGitHub
+          requires:
+            - build_runtime_2.2_win-x86
+            - build_runtime_2.2_win-x64
+            - build_runtime_2.2_osx-x64
+            - build_runtime_2.2_linux-musl-x64
+            - build_runtime_2.2_linux-x64
+            - build_runtime_3.0_win-x86
+            - build_runtime_3.0_win-x64
+            - build_runtime_3.0_osx-x64
+            - build_runtime_3.0_linux-musl-x64
+            - build_runtime_3.0_linux-x64
+            # - build_and_coverage
+          filters:
+              branches:
+                only: master

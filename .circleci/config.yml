@@ -1,0 +1,120 @@
+version: 2.1
+
+orbs:
+  codacy: codacy/base@0.0.13
+
+jobs:
+  build_and_test:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+    working_directory: ~/workdir
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Compile
+          command: dotnet build -c Debug
+      - run:
+          name: Run tests
+          command: dotnet test test/CSharpCoverage.Tests
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - workdir
+
+  build_runtime:
+    parameters:
+      framework:
+        type: string
+      runtime:
+        type: string
+    description: "Build to a specific runtime command"
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+    working_directory: ~/workdir
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install needed packages
+          command: |
+            apt-get update
+            apt-get install -y zip
+      - run:
+          name: Build for << parameters.runtime >> (<< parameters.framework >>)
+          command: ./scripts/publish.sh << parameters.framework >> << parameters.runtime >>
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - workdir/artifacts/
+
+  github-release:
+    docker:
+      - image: cibuilds/github:0.12.2
+    working_directory: ~/workdir
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: "Publish Release on GitHub"
+          command: |
+            GHR_FLAGS=""
+            if [ "${CIRCLE_BRANCH}" != "master" ]; then
+              GHR_FLAGS+="-prerelease"
+            fi
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${GHR_FLAGS} -delete $(cat .version) ./artifacts/
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - codacy/checkout_and_version
+      - build_and_test:
+          requires:
+            - codacy/checkout_and_version
+      - build_runtime:
+          name: build_runtime_linux-x64
+          framework: netcoreapp2.2
+          runtime: linux-x64
+          requires:
+            - build_and_test
+      - build_runtime:
+          name: build_runtime_linux-musl-x64
+          framework: netcoreapp2.2
+          runtime: linux-musl-x64
+          requires:
+            - build_and_test
+      - build_runtime:
+          name: build_runtime_osx-x64
+          framework: netcoreapp2.2
+          runtime: osx-x64
+          requires:
+            - build_and_test
+      - build_runtime:
+          name: build_runtime_win-x64
+          framework: netcoreapp2.2
+          runtime: win-x64
+          requires:
+            - build_and_test
+      - build_runtime:
+          name: build_runtime_win-x86
+          framework: netcoreapp2.2
+          runtime: win-x86
+          requires:
+            - build_and_test
+      - github-release:
+          context: CodacyGitHub
+          requires:
+            - build_runtime_win-x86
+            - build_runtime_win-x64
+            - build_runtime_osx-x64
+            - build_runtime_linux-musl-x64
+            - build_runtime_linux-x64
+      #    filters:
+      #       branches:
+      #         only: master
+      # - codacy/tag_version:
+      #     name: tag_version
+      #     requires:
+      #       - publish

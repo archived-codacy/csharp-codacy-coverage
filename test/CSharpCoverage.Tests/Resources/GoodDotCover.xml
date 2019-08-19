@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Root>
+	<FileIndices>
+		<File Index="1" Name="foo.cs" />
+		<File Index="2" Name="bar.cs" />
+		<File Index="3" Name="foobar.cs" />
+	</FileIndices>
+	<Assembly>
+		<Namespace>
+			<Type CoveragePercent="100">
+				<Method>
+					<Statement FileIndex="1" Line="10" EndLine="10" Covered="True" />
+				</Method>
+			</Type>
+			<Type CoveragePercent="0">
+				<Member>
+					<Statement FileIndex="2" Line="10" EndLine="10" Covered="False" />
+				</Member>
+			</Type>
+			<Type CoveragePercent="50">
+				<Method>
+					<Statement FileIndex="3" Line="10" EndLine="10" Covered="False" />
+					<Statement FileIndex="3" Line="20" EndLine="20" Covered="True" />
+				</Method>
+			</Type>
+		</Namespace>
+	</Assembly>
+</Root>

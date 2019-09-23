@@ -54,8 +54,6 @@ namespace Codacy.CSharpCoverage
 
                         await SendReport(report, opt.CommitUUID, opt.Token, opt.Partial).ConfigureAwait(false);
                     }
-
-                    SendReport(report, opt.CommitUUID, opt.Token, opt.Partial);
                 });
         }
 
@@ -174,10 +172,14 @@ namespace Codacy.CSharpCoverage
             }
         }
 
+
         public class Options
         {
             [Option('p', "partial", Required = false, HelpText = "Send report as a partial report", Default = false)]
             public bool Partial { get; set; }
+
+            [Option('f', "final", Required = false, HelpText = "Send final coverage report request", Default = false)]
+            public bool Final { get; set; }
 
             [Option('c', "commit", Required = true, HelpText = "Specify the commit UUID")]
             public string CommitUUID { get; set; }
@@ -185,10 +187,10 @@ namespace Codacy.CSharpCoverage
             [Option('t', "token", Required = true, HelpText = "Specify the project token")]
             public string Token { get; set; }
 
-            [Option('r', "report", Required = true, HelpText = "Path to the coverage report")]
+            [Option('r', "report", Required = false, HelpText = "Path to the coverage report")]
             public string ReportFile { get; set; }
 
-            [Option('e', "engine", Required = true, HelpText = "Engine Report Type (dotcover, opencover).")]
+            [Option('e', "engine", Required = false, HelpText = "Engine Report Type (dotcover, opencover).")]
             public string ReportType { get; set; }
         }
     }

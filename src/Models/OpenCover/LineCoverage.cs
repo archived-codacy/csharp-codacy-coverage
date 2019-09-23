@@ -1,8 +1,20 @@
 namespace Codacy.CSharpCoverage.Models.OpenCover
 {
+    /// <summary>
+    ///     Line coverage.
+    ///     This contains the line number and the visit count of that line
+    ///     in terms of coverage. This is based OpenCover file format.
+    /// </summary>
     public sealed class LineCoverage
     {
+        /// <summary>
+        ///     Parsed line number
+        /// </summary>
         public int LineNumber { get; set; }
+
+        /// <summary>
+        ///     Parsed coverage visit count
+        /// </summary>
         public int VisitCount { get; set; }
 
         public override bool Equals(object obj)

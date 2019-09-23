@@ -1,14 +1,23 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 
 namespace Codacy.CSharpCoverage.Models.Result
 {
+    /// <summary>
+    ///     Codacy report model.
+    ///     This represents the codacy report format.
+    /// </summary>
     public class CodacyReport
     {
+        /// <summary>
+        ///     File reports constructor.
+        ///     This construct a codacy report using a list of
+        ///     file reports.
+        /// </summary>
+        /// <param name="fileReports">list of file reports</param>
         public CodacyReport(IEnumerable<FileInfo> fileReports)
         {
             var totalTuple = fileReports
@@ -16,15 +25,26 @@ namespace Codacy.CSharpCoverage.Models.Result
                 .Aggregate((Covered: 0, Total: 0),
                     (t, n) => t = (Covered: t.Covered + n.Covered, Total: t.Total + n.Total));
 
-            Total = Convert.ToInt32(Math.Round(((double) totalTuple.Covered / totalTuple.Total * 100)));
+            Total = Convert.ToInt32(Math.Round((double) totalTuple.Covered / totalTuple.Total * 100));
             FileReports = fileReports;
         }
 
-        [JsonProperty(PropertyName = "total")] public int Total { get; set; }
+        /// <summary>
+        ///     Total of coverage (in percentage)
+        /// </summary>
+        [JsonProperty(PropertyName = "total")]
+        public int Total { get; set; }
 
+        /// <summary>
+        ///     List of file reports
+        /// </summary>
         [JsonProperty(PropertyName = "fileReports")]
         public IEnumerable<FileInfo> FileReports { get; set; }
 
+        /// <summary>
+        ///     Convert to a string-based json format.
+        /// </summary>
+        /// <returns>string-based json format</returns>
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this,
@@ -35,12 +55,18 @@ namespace Codacy.CSharpCoverage.Models.Result
                 });
         }
 
+        /// <summary>
+        ///     Get a pretty summary of this coverage report file.
+        /// </summary>
+        /// <returns>stats summary</returns>
         public string GetStats()
         {
             var stringBuilder = new StringBuilder($"Coverage report:{Environment.NewLine}{Environment.NewLine}");
 
             foreach (var file in FileReports)
+            {
                 stringBuilder.Append($" {file.Total} %\t{file.Filename}{Environment.NewLine}");
+            }
 
             stringBuilder.Append($"{Environment.NewLine}Total Coverage: {Total}%");
 

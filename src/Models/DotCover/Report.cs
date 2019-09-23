@@ -3,9 +3,19 @@ using System.Linq;
 
 namespace Codacy.CSharpCoverage.Models.DotCover
 {
+    /// <summary>
+    ///     Report model based on DotCover file format.
+    /// </summary>
     public sealed class Report : IReport
     {
+        /// <summary>
+        ///     List of class coverages for each file id.
+        /// </summary>
         public List<ClassCoverage> ClassCoverages { get; set; }
+
+        /// <summary>
+        ///     Dictionary of file ids and file paths.
+        /// </summary>
         public Dictionary<int, string> FilesList { get; set; }
 
         public override bool Equals(object obj)

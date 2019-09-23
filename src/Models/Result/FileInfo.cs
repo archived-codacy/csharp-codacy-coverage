@@ -4,13 +4,28 @@ using Newtonsoft.Json;
 
 namespace Codacy.CSharpCoverage.Models.Result
 {
+    /// <summary>
+    ///     File info.
+    ///     This represents the coverage information of
+    ///     a single file.
+    /// </summary>
     public class FileInfo
     {
+        /// <summary>
+        ///     File name
+        /// </summary>
         [JsonProperty(PropertyName = "filename")]
         public string Filename { get; set; }
 
-        [JsonProperty(PropertyName = "total")] public int Total { get; set; }
+        /// <summary>
+        ///     Total of coverage (in percentage)
+        /// </summary>
+        [JsonProperty(PropertyName = "total")]
+        public int Total { get; set; }
 
+        /// <summary>
+        ///     Dictionary of file line and coverage hits.
+        /// </summary>
         [JsonProperty(PropertyName = "coverage")]
         public Dictionary<int, int> Coverage { get; set; }
 

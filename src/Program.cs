@@ -13,6 +13,7 @@ namespace Codacy.CSharpCoverage
     {
         private static void Main(string[] args)
         {
+            // parse the option arguments
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed(async opt =>
                 {
@@ -172,7 +173,10 @@ namespace Codacy.CSharpCoverage
             }
         }
 
-
+        /// <summary>
+        ///     Program options.
+        ///     This class specifies the arguments passed to the program when it's called.
+        /// </summary>
         public class Options
         {
             [Option('p', "partial", Required = false, HelpText = "Send report as a partial report", Default = false)]

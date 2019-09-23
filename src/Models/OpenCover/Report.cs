@@ -3,8 +3,14 @@ using System.Linq;
 
 namespace Codacy.CSharpCoverage.Models.OpenCover
 {
+    /// <summary>
+    ///     Report model based on OpenCover file format.
+    /// </summary>
     public sealed class Report : IReport
     {
+        /// <summary>
+        ///     List of module elements
+        /// </summary>
         public List<ModuleElement> ModuleElements { get; set; }
 
         public override bool Equals(object obj)

@@ -1,9 +1,25 @@
 namespace Codacy.CSharpCoverage.Models.DotCover
 {
+    /// <summary>
+    ///     Line Coverage.
+    ///     This represents a line coverage parsed from
+    ///     DotCover format.
+    /// </summary>
     public sealed class LineCoverage
     {
+        /// <summary>
+        ///     Parsed start line number
+        /// </summary>
         public int Line { get; set; }
+
+        /// <summary>
+        ///     Parsed end line number
+        /// </summary>
         public int EndLine { get; set; }
+
+        /// <summary>
+        ///     Parsed boolean of the coverage hit.
+        /// </summary>
         public bool Covered { get; set; }
 
         public override bool Equals(object obj)

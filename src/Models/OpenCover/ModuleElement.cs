@@ -3,9 +3,22 @@ using System.Linq;
 
 namespace Codacy.CSharpCoverage.Models.OpenCover
 {
+    /// <summary>
+    ///     Module element.
+    ///     This contains Module elements parsed from OpenCover format.
+    ///     This has a dictionary of file ids and file paths. It also has
+    ///     a list of class coverages for each file id.
+    /// </summary>
     public sealed class ModuleElement
     {
+        /// <summary>
+        ///     Dictionary of file ids and file paths.
+        /// </summary>
         public Dictionary<int, string> FilesList { get; set; }
+
+        /// <summary>
+        ///     List of class coverages for each file id.
+        /// </summary>
         public List<ClassCoverage> ClassCoverages { get; set; }
 
         public override bool Equals(object obj)

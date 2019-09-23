@@ -4,10 +4,26 @@ using System.Linq;
 
 namespace Codacy.CSharpCoverage.Models.OpenCover
 {
+    /// <summary>
+    ///     Class coverage.
+    ///     This contains, for each file id, the class coverage
+    ///     parsed from the OpenCover format.
+    /// </summary>
     public sealed class ClassCoverage
     {
+        /// <summary>
+        ///     Parsed sequence coverage (in percentage)
+        /// </summary>
         public double SequenceCoverage { get; set; }
+
+        /// <summary>
+        ///     Parsed file id.
+        /// </summary>
         public int FileId { get; set; }
+
+        /// <summary>
+        ///     List of covered lines of the referred file id.
+        /// </summary>
         public List<LineCoverage> CoveredLines { get; set; }
 
         public override bool Equals(object obj)

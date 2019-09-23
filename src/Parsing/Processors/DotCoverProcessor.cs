@@ -7,6 +7,10 @@ using Codacy.CSharpCoverage.Models.Result;
 
 namespace Codacy.CSharpCoverage.Parsing.Processors
 {
+    /// <summary>
+    ///     DotCover Processor.
+    ///     This process the DotCover format into Codacy format.
+    /// </summary>
     public class DotCoverProcessor : IProcessor<Report>
     {
         public Report Parse(string file)
@@ -36,7 +40,10 @@ namespace Codacy.CSharpCoverage.Parsing.Processors
                     int? fileId = null;
                     var methodCoverage = new List<LineCoverage>();
                     var methods = projectClass.Elements("Member");
-                    if (!methods.Any()) methods = projectClass.Elements("Method");
+                    if (!methods.Any())
+                    {
+                        methods = projectClass.Elements("Method");
+                    }
 
                     foreach (var method in methods)
                     {
@@ -45,12 +52,14 @@ namespace Codacy.CSharpCoverage.Parsing.Processors
                         {
                             fileId = Convert.ToInt32(lines.First().Attribute("FileIndex").Value);
                             foreach (var line in lines)
+                            {
                                 methodCoverage.Add(new LineCoverage
                                 {
                                     Line = int.Parse(line.Attribute("Line").Value),
                                     EndLine = int.Parse(line.Attribute("EndLine").Value),
                                     Covered = line.Attribute("Covered").Value == "True"
                                 });
+                            }
                         }
 
                         if (fileId != null && report.FilesList.ContainsKey(fileId.Value))
@@ -96,6 +105,13 @@ namespace Codacy.CSharpCoverage.Parsing.Processors
             return coverageReport;
         }
 
+        /// <summary>
+        ///     Get the project files list.
+        ///     This function maps a XElement into a KeyValuePair. It has
+        ///     a unique file id and a file path for that id.
+        /// </summary>
+        /// <param name="files">list of files in XElement format</param>
+        /// <returns>dictionary of file id and file path</returns>
         private static Dictionary<int, string> GetProjectFilesList(IEnumerable<XElement> files)
         {
             var fileList = new Dictionary<int, string>();

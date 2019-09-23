@@ -4,10 +4,26 @@ using System.Linq;
 
 namespace Codacy.CSharpCoverage.Models.DotCover
 {
+    /// <summary>
+    ///     Class coverage.
+    ///     This represents a class coverage parsed from
+    ///     DotCover format.
+    /// </summary>
     public sealed class ClassCoverage
     {
+        /// <summary>
+        ///     Parsed coverage percentage
+        /// </summary>
         public double CoveragePercent { get; set; }
+
+        /// <summary>
+        ///     Parsed file id
+        /// </summary>
         public int FileId { get; set; }
+
+        /// <summary>
+        ///     Covered lines for the referred file id.
+        /// </summary>
         public List<LineCoverage> CoveredLines { get; set; }
 
         public override bool Equals(object obj)

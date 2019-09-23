@@ -13,6 +13,22 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
+          name: Generate cache key
+          command: |
+            shasum src/packages.lock.json \
+              test/CSharpCoverage.Tests/packages.lock.json > /tmp/dependencies.cache.tmp
+      - restore_cache:
+          keys:
+            - nuget-v1-{{ checksum "/tmp/dependencies.cache.tmp" }}
+            - nuget-v1-
+      - run:
+          name: Restore
+          command: dotnet restore
+      - save_cache:
+          key: nuget-v1-{{ checksum "/tmp/dependencies.cache.tmp" }}
+          paths:
+            - "packages"
+      - run:
           name: Compile
           command: dotnet build -c Debug
       - run:

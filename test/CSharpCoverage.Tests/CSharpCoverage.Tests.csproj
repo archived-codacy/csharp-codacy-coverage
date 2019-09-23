@@ -3,6 +3,7 @@
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
 		<RootNamespace>Codacy.CSharpCoverage.Tests</RootNamespace>
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 		<TargetFramework Condition=" '$(UsePreviewVersion)' == true ">netcoreapp3.0</TargetFramework>
 		<TargetFramework Condition=" '$(UsePreviewVersion)' != true ">netcoreapp2.2</TargetFramework>
 	</PropertyGroup>
@@ -19,5 +20,12 @@
 		<Content Include="Resources\**\*.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+		<Compile Remove="packages\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Remove="packages\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="packages\**" />
 	</ItemGroup>
 </Project>

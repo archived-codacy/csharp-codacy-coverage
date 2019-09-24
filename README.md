@@ -20,6 +20,7 @@ This is the parameters list:
 - `-r`, `--report`: Path to the coverage report _(Required)_
 - `-e`, `--engine`: Engine Report Type (dotcover, opencover). _(Required)_
 - `-p`, `--partial`: Send report as a partial report _(Default: false)_
+- `-f`, `--final`: Send final coverage request _(Default: false)_
 - `--help`: Display this help screen.
 - `--version`: Display version information.
 

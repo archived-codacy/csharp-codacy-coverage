@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Codacy.CSharpCoverage</RootNamespace>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <DebugType Condition=" '$(Configuration)' == 'Release' ">None</DebugType>
+    <TargetFramework Condition=" '$(UsePreviewVersion)' == true ">netcoreapp3.0</TargetFramework>
+    <TargetFramework Condition=" '$(UsePreviewVersion)' != true ">netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.5.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="packages\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="packages\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="packages\**" />
+  </ItemGroup>
+</Project>

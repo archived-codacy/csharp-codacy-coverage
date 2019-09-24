@@ -316,7 +316,7 @@ __pycache__/
 *.xsd.cs
 
 # OpenCover UI analysis results
-OpenCover/
+/OpenCover/
 
 # Azure Stream Analytics local run output 
 ASALocalRun/
@@ -329,3 +329,6 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+/artifacts/
+/packages.txt

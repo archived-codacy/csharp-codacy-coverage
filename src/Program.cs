@@ -114,7 +114,7 @@ namespace Codacy.CSharpCoverage
         /// <returns>an async http response</returns>
         private static HttpResponseMessage MakeFinalRequest(string commitUuid, string projectToken)
         {
-            return MakeRequest("", $"{GetBaseApiOrDefault()}/2.0/commit/{commitUuid}/coverageFinal",
+            return MakeRequest("{}", $"/2.0/commit/{commitUuid}/coverageFinal",
                 projectToken);
         }
 

@@ -2,7 +2,6 @@
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using Codacy.CSharpCoverage.Models.Result;
 using Codacy.CSharpCoverage.Parsing.Processors;
 using CommandLine;
@@ -15,11 +14,11 @@ namespace Codacy.CSharpCoverage
         {
             // parse the option arguments
             Parser.Default.ParseArguments<Options>(args)
-                .WithParsed(async opt =>
+                .WithParsed(opt =>
                 {
                     if (opt.Final)
                     {
-                        await MakeFinalRequest(opt.CommitUUID, opt.Token).ConfigureAwait(false);
+                        MakeFinalRequest(opt.CommitUUID, opt.Token);
                     }
                     else if (string.IsNullOrEmpty(opt.ReportFile))
                     {
@@ -53,7 +52,7 @@ namespace Codacy.CSharpCoverage
                                     "Unrecognized report format, please choose dotcover or opencover");
                         }
 
-                        await SendReport(report, opt.CommitUUID, opt.Token, opt.Partial).ConfigureAwait(false);
+                        SendReport(report, opt.CommitUUID, opt.Token, opt.Partial);
                     }
                 });
         }
@@ -67,7 +66,7 @@ namespace Codacy.CSharpCoverage
         /// <param name="isPartial">partial flag</param>
         /// <exception cref="FormatException">if it's passed an invalid commit uuid or project token</exception>
         /// <exception cref="HttpRequestException">if the api response status code is not 200.</exception>
-        private static async Task SendReport(CodacyReport report, string commitUuid, string projectToken, bool isPartial)
+        private static void SendReport(CodacyReport report, string commitUuid, string projectToken, bool isPartial)
         {
             if (string.IsNullOrEmpty(commitUuid))
             {
@@ -79,7 +78,7 @@ namespace Codacy.CSharpCoverage
                 throw new FormatException("Invalid project token");
             }
 
-            await MakeReportRequest(report.ToString(), commitUuid, projectToken, isPartial).ConfigureAwait(false);
+            MakeReportRequest(report.ToString(), commitUuid, projectToken, isPartial);
 
             Console.WriteLine(report.GetStats());
         }
@@ -113,10 +112,10 @@ namespace Codacy.CSharpCoverage
         /// <param name="commitUuid">commit uuid</param>
         /// <param name="projectToken">project token</param>
         /// <returns>an async http response</returns>
-        private static async Task<HttpResponseMessage> MakeFinalRequest(string commitUuid, string projectToken)
+        private static HttpResponseMessage MakeFinalRequest(string commitUuid, string projectToken)
         {
-            return await MakeRequest("", $"{GetBaseApiOrDefault()}/2.0/commit/{commitUuid}/coverageFinal",
-                projectToken).ConfigureAwait(false);
+            return MakeRequest("{}", $"/2.0/commit/{commitUuid}/coverageFinal",
+                projectToken);
         }
 
         /// <summary>
@@ -128,14 +127,14 @@ namespace Codacy.CSharpCoverage
         /// <param name="projectToken">project token</param>
         /// <param name="isPartial">partial flag</param>
         /// <returns></returns>
-        private static async Task<HttpResponseMessage> MakeReportRequest(string json, string commitUuid,
+        private static HttpResponseMessage MakeReportRequest(string json, string commitUuid,
             string projectToken,
             bool isPartial)
         {
             var partial = isPartial ? "true" : "false";
 
-            return await MakeRequest(json,
-                $"/2.0/coverage/{commitUuid}/CSharp?partial={partial}", projectToken).ConfigureAwait(false);
+            return MakeRequest(json,
+                $"/2.0/coverage/{commitUuid}/CSharp?partial={partial}", projectToken);
         }
 
         /// <summary>
@@ -147,7 +146,7 @@ namespace Codacy.CSharpCoverage
         /// <param name="endpoint">api endpoint</param>
         /// <param name="projectToken">project token</param>
         /// <returns></returns>
-        private static async Task<HttpResponseMessage> MakeRequest(string content, string endpoint, string projectToken)
+        private static HttpResponseMessage MakeRequest(string content, string endpoint, string projectToken)
         {
             //prepare url with base api url and the endpoint
             var destUri = new Uri($"{GetBaseApiOrDefault()}{endpoint}");
@@ -158,7 +157,7 @@ namespace Codacy.CSharpCoverage
             client.DefaultRequestHeaders.Add("project_token", projectToken);
 
             //post request
-            var res = await client.PostAsync(destUri, new StringContent(content, Encoding.UTF8, "application/json")).ConfigureAwait(false);
+            var res = client.PostAsync(destUri, new StringContent(content, Encoding.UTF8, "application/json")).Result;
 
             Console.WriteLine(res.Content);
             Console.WriteLine("Response status: " + res.StatusCode);

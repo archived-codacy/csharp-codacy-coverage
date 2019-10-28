@@ -875,7 +875,7 @@
           "xunit.extensibility.core": "[2.4.1]"
         }
       },
-      "codacy.csharpcoverage": {
+      "Codacy.CSharpCoverage": {
         "type": "Project",
         "dependencies": {
           "CommandLineParser": "2.5.0",

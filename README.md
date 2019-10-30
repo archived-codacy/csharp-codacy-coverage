@@ -24,20 +24,20 @@ This is the parameters list:
 - `--help`: Display this help screen.
 - `--version`: Display version information.
 
-#### Detecting commit UUID
+### Detecting commit UUID
 
 On CI from Environment Variables:
 
-- CI_COMMIT
-- TRAVIS_PULL_REQUEST_SHA
-- TRAVIS_COMMIT
-- DRONE_COMMIT
-- CIRCLE_SHA1
-- CI_COMMIT_ID
-- WERCKER_GIT_COMMIT
-- CODEBUILD_RESOLVED_SOURCE_VERSION
-- SCRUTINIZER_SHA1
-- REVISION
+  - CI_COMMIT
+  - TRAVIS_PULL_REQUEST_SHA
+  - TRAVIS_COMMIT
+  - DRONE_COMMIT
+  - CIRCLE_SHA1
+  - CI_COMMIT_ID
+  - WERCKER_GIT_COMMIT
+  - CODEBUILD_RESOLVED_SOURCE_VERSION
+  - SCRUTINIZER_SHA1
+  - REVISION
 
 ### Windows w/ compressed archive
 

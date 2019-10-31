@@ -25,7 +25,7 @@ namespace Codacy.CSharpCoverage.Models.Result
                 .Aggregate((Covered: 0, Total: 0),
                     (t, n) => t = (Covered: t.Covered + n.Covered, Total: t.Total + n.Total));
 
-            Total = Convert.ToInt32(Math.Round((double) totalTuple.Covered / totalTuple.Total * 100));
+            Total = Convert.ToInt32((totalTuple.Total == 0) ? 0.0 : Math.Round((double) totalTuple.Covered / totalTuple.Total * 100));
             FileReports = fileReports;
         }
 

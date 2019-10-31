@@ -26,6 +26,10 @@ namespace Codacy.CSharpCoverage.Parsing.Processors
                                                 modules.Elements("File"))
             };
 
+            if (report.FilesList.Count == 0) {
+                Console.WriteLine ("Warning: Got a report without File elements. Consider report dotCover with --ReportType=DetailedXML");
+            }
+
             foreach (var module in namespaces)
             {
                 var classes = module.Elements("Type");

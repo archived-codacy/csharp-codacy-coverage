@@ -39,6 +39,11 @@ On CI from Environment Variables:
 - SCRUTINIZER_SHA1
 - REVISION
 
+### Codacy endpoint
+
+On CI, from Environment Variables, CODACY_API_BASE_URL can be used to define the endpoint (e.g. http://codacy.mydomain.com:16006).
+By default, Codacy Cloud endpoint is used.
+
 ### Windows w/ compressed archive
 
 ```ps

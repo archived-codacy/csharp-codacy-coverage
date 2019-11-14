@@ -6,8 +6,9 @@ mkdir -p artifacts/
 
 pushd src
 	if [[ $1 == "netcoreapp3.0" ]]; then
-		dotnet tool install --global dotnet-warp || true
-		dotnet warp -r $2 -p Configuration=Release -p PublishTrimmed=true -p UsePreviewVersion=true
+		dotnet new tool-manifest --force
+		dotnet tool install --local dotnet-warp
+		dotnet warp -r "$2" -p "Configuration=Release" -p "PublishTrimmed=true" -p "UsePreviewVersion=true"
 		if [[ $2 == win-* ]]; then
 			BIN_EXT=".exe"
 		else

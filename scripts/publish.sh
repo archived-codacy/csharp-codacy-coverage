@@ -6,13 +6,14 @@ mkdir -p artifacts/
 
 pushd src
 	if [[ $1 == "netcoreapp3.0" ]]; then
-		dotnet publish -c Release -f $1 -r $2 /p:PublishSingleFile=true /p:UsePreviewVersion=true
+		dotnet tool install --global dotnet-warp || true
+		dotnet warp -r $2 -p Configuration=Release -p PublishTrimmed=true -p UsePreviewVersion=true
 		if [[ $2 == win-* ]]; then
 			BIN_EXT=".exe"
 		else
 			BIN_EXT=""
 		fi
-		mv -f "bin/Release/$1/$2/publish/Codacy.CSharpCoverage$BIN_EXT" "../artifacts/Codacy.CSharpCoverage_$2$BIN_EXT"
+		mv -f "Codacy.CSharpCoverage$BIN_EXT" "../artifacts/Codacy.CSharpCoverage_$2$BIN_EXT"
 	else
 		dotnet publish -c Release -f $1 -r $2
 		pushd bin/Release/$1/$2/publish

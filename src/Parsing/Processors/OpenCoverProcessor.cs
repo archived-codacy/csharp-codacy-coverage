@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using Codacy.CSharpCoverage.Models.OpenCover;
@@ -47,7 +48,7 @@ namespace Codacy.CSharpCoverage.Parsing.Processors
 
                     var coverageInfo = new ClassCoverage
                     {
-                        SequenceCoverage = Convert.ToDouble(summaryElem.Attribute("sequenceCoverage").Value)
+                        SequenceCoverage = Convert.ToDouble(summaryElem.Attribute("sequenceCoverage").Value , CultureInfo.InvariantCulture)
                     };
 
                     int? fileId = null;

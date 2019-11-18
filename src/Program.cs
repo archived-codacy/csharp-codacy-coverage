@@ -10,8 +10,10 @@ namespace Codacy.CSharpCoverage
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static int Main(string[] args)
         {
+            int exitcode = 0;
+
             // parse the option arguments
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed(opt =>
@@ -54,7 +56,10 @@ namespace Codacy.CSharpCoverage
 
                         SendReport(report, opt.CommitUUID, opt.Token, opt.Partial);
                     }
-                });
+                })
+                .WithNotParsed(errs => exitcode = 1);
+
+            return exitcode;
         }
 
         /// <summary>

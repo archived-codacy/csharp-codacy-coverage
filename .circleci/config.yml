@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  codacy: codacy/base@0.0.13
+  codacy: codacy/base@1.2.1
 
 jobs:
   build_and_test:
@@ -186,5 +186,5 @@ workflows:
             - build_runtime_3.0_linux-x64
             # - build_and_coverage
           filters:
-              branches:
-                only: master
+            branches:
+              only: master

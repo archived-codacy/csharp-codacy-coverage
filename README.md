@@ -1,7 +1,6 @@
 # Codacy C# Coverage Reporter
 
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/62d12b85e3ea42e080d9a3c3dfa7a5bf)](https://www.codacy.com/app/Codacy/csharp-codacy-coverage)
-[![Codacy Badge](https://api.codacy.com/project/badge/coverage/62d12b85e3ea42e080d9a3c3dfa7a5bf)](https://www.codacy.com/app/Codacy/csharp-codacy-coverage)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b247c4395db74227a61069bf3d303f5c)](https://www.codacy.com/gh/codacy/csharp-codacy-coverage?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=codacy/csharp-codacy-coverage&amp;utm_campaign=Badge_Grade)
 [![Circle CI](https://circleci.com/gh/codacy/csharp-codacy-coverage.svg?style=shield)](https://circleci.com/gh/codacy/csharp-codacy-coverage)
 
 [Codacy](https://codacy.com/) coverage support for C#. This tool uses Codacy API to send the coverage report parsed from OpenCover or dotCover coverage tools.

@@ -1,3 +1,7 @@
+# Deprecated
+
+This repository is no longer maintained. As an alternative, check [codacy-coverage-reporter](https://github.com/codacy/codacy-coverage-reporter) to send your test coverage results to your Codacy dashboard.
+
 # Codacy C# Coverage Reporter
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b247c4395db74227a61069bf3d303f5c)](https://www.codacy.com/gh/codacy/csharp-codacy-coverage?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=codacy/csharp-codacy-coverage&amp;utm_campaign=Badge_Grade)
